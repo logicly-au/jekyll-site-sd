@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e # halt script on error
+
+source env
+
+openssl aes-256-cbc \
+  -K $key \
+  -iv $iv \
+  -in .travis/deploy-key.enc \
+  -out .travis/deploy-key -d
+
+eval "$(ssh-agent -s)" #start the ssh agent
+chmod 600 .travis/deploy-key
+ssh-add .travis/deploy-key
+
+# Edit .gitignore to publish
+perl -n -i -e "print unless /^_site\/$/" ./.gitignore
+git add .
+git commit -m "Commit build artefacts for publishing"
+git remote add pages ${GIT_REPO}
+git push pages `git subtree split --prefix _site 2> /dev/null`:gh-pages --force
+git reset HEAD~
+git checkout .gitignore

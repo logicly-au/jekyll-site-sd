@@ -1,0 +1,5 @@
+_site/
+.travis/deploy-key
+.sass-cache/
+.bundle/
+vendor/
