@@ -8,7 +8,7 @@ jdk:
   - oraclejdk8
 before_script:
   - pip install --user html5validator
-script: ./travis/script/cibuild
+script: ./jekyll-site-sd/script/cibuild
 branches:
   only:
   - master
@@ -17,7 +17,7 @@ env:
   - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 deploy:
   provider: script
-  script: ./travis/script/deploy
+  script: ./jekyll-site-sd/script/deploy
   skip_cleanup: true
   on:
     branch: master
